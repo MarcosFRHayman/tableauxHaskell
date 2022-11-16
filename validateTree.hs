@@ -1,0 +1,1 @@
+data Tree a = Node a Bool Int (Tree a) (Tree a) | Empty deriving (Show)
