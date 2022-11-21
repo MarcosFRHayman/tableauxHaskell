@@ -1,17 +1,20 @@
-data Tree a = Node a Bool (Tree a) (Tree a) | Empty deriving (Show)
+import ShowTree
 
-createTree :: [(String, Bool)] -> Tree String
-createTree [] = Empty
-createTree ((formula, valorVerdade) : resto)
-    | (esq == " ") && (dir == " ") = Node formula valorVerdade (createTree resto) Empty
-    | (op == '>') && valorVerdade = Node formula valorVerdade (createTree (resto++[(esq, False)])) (createTree (resto++[(dir, True)]))
-    | (op == '>') && (not valorVerdade) = Node formula valorVerdade (createTree (resto++[(esq, True),(dir, False)])) Empty
-    | (op == '^') && valorVerdade = Node formula valorVerdade (createTree (resto++[(esq, True),(dir, True)])) Empty
-    | (op == '^') && (not valorVerdade) = Node formula valorVerdade (createTree (resto++[(esq, False)])) (createTree (resto++[(dir, False)]))
-    | (op == 'v') && valorVerdade = Node formula valorVerdade (createTree (resto++[(esq, True)])) (createTree (resto++[(dir, True)]))
-    | (op == 'v') && (not valorVerdade) = Node formula valorVerdade (createTree (resto++[(esq, False),(dir, False)])) Empty
-    | (op == '~') && valorVerdade = Node formula valorVerdade (createTree (resto++[(dir, False)])) Empty
-    | (op == '~') && (not valorVerdade) = Node formula valorVerdade (createTree (resto++[(dir, True)])) Empty
+--TODO: encontrar uma forma de colocar derivações sequencias uma embaixod da outra
+data ArvoreTableaux = No String Bool (ArvoreTableaux) (ArvoreTableaux) | Vazio  deriving(Show)
+
+criaArvore :: [(String, Bool)] -> ArvoreTableaux
+criaArvore [] = Vazio
+criaArvore ((formula, valorVerdade) : resto)
+    | (esq == " ") && (dir == " ") = No formula valorVerdade (criaArvore resto) Vazio
+    | (op == '>') && valorVerdade = No formula valorVerdade (criaArvore ([(esq, False)]++resto)) (criaArvore ([(dir, True)]++resto))
+    | (op == '>') && (not valorVerdade) = No formula valorVerdade (criaArvore ([(esq, True),(dir, False)]++resto)) Vazio
+    | (op == '^') && valorVerdade = No formula valorVerdade (criaArvore ([(esq, True),(dir, True)]++resto)) Vazio
+    | (op == '^') && (not valorVerdade) = No formula valorVerdade (criaArvore ([(esq, False)]++resto)) (criaArvore ([(dir, False)]++resto))
+    | (op == 'v') && valorVerdade = No formula valorVerdade (criaArvore ([(esq, True)]++resto)) (criaArvore ([(dir, True)]++resto))
+    | (op == 'v') && (not valorVerdade) = No formula valorVerdade (criaArvore ([(esq, False),(dir, False)]++resto)) Vazio
+    | (op == '~') && valorVerdade = No formula valorVerdade (criaArvore ([(dir, False)]++resto)) Vazio
+    | (op == '~') && (not valorVerdade) = No formula valorVerdade (criaArvore ([(dir, True)]++resto)) Vazio
     where
         resp = readOperator formula "" 0
         (esq, op, dir) = resp
@@ -26,13 +29,7 @@ readOperator (c : t) accstr accpar
     | c == ' ' = readOperator t accstr accpar
     | otherwise = readOperator t (accstr ++ [c]) accpar
 
-indent :: [String] -> [String]
-indent x = map ("     "++) x
-
-layoutTree :: Show a => Tree a -> [String]
-layoutTree Empty = []
-layoutTree (Node here truth left right)
-            = indent (layoutTree right) ++ [show truth] ++[show here] ++ indent (layoutTree left)
-
-prettyTree :: Show a => Tree a -> String
-prettyTree = unlines.layoutTree
+toStringTree :: ArvoreTableaux -> Tree String
+toStringTree Vazio = Empty
+toStringTree (No here truth left right) = 
+    Node ((show truth)++ ":" ++ here) (toStringTree left) (toStringTree right)
