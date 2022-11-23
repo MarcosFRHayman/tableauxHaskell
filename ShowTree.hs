@@ -5,8 +5,8 @@ import Control.Monad.State
 -- Obtido de https://matthewmcgonagle.github.io/blog/2017/10/10/PrintingABinaryTreeInHaskell - Visitado por último em 20/11/2022
 --TODO: Corrigir o padding, está muito para a direita
 
-main :: IO ()
-main = do
+exampleMain :: IO ()
+exampleMain = do
   let exampleTree = Node "haskell"
                          (Node "a"
                                Empty

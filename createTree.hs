@@ -1,7 +1,9 @@
+module CreateTree where
+
 import ShowTree
 
 --TODO: encontrar uma forma de colocar derivações sequencias uma embaixod da outra
-data ArvoreTableaux = No String Bool (ArvoreTableaux) (ArvoreTableaux) | Vazio  deriving(Show)
+data ArvoreTableaux = No String Bool (ArvoreTableaux) (ArvoreTableaux) | Vazio  deriving(Show, Eq)
 
 criaArvore :: [(String, Bool)] -> ArvoreTableaux
 criaArvore [] = Vazio
