@@ -17,7 +17,7 @@ ghc --make validateTree.hs
 Altere a linha 7 no arquivo [validateTree.hs](validateTree.hs), altere a constante "formula" para representar a fórmula que você quer avaliar e utilize o seguinte comando para compilar:
 
 ```shell
-ghci validateTree.exe
+ghci validateTree.hs
 ```
 
 e dentro do ghci rode:
