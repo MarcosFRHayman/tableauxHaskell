@@ -4,7 +4,8 @@ import ShowTree
 import Control.Monad.State
 import Data.List
 
-arvore = criaArvore [("(p>((pvq)>(p^q)))", False)]
+formula = "(p>((pvq)>(p^q)))"
+arvore = criaArvore [(formula, False)]
 (arvoreValidada, verdValidade, falsValidade, contraExemplo) = validateAux arvore [] []
 validadaStr = toStringTree arvoreValidada
 (No p bool p_esq p_dir) = criaArvore[("p", False)]
