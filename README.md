@@ -9,7 +9,7 @@
 Altere a linha 7 no arquivo [validateTree.hs](validateTree.hs), altere a constante "formula" para representar a fórmula que você quer avaliar e então utilize o seguinte commando para compilar:
 
 ```shell
-ghc --make validateTree.exe
+ghc --make validateTree.hs
 ```
 
 ## Compilando interativamente
